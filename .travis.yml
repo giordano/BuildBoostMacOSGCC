@@ -12,11 +12,8 @@ matrix:
       osx_image: xcode10.1
 
 script:
-  - export CC=gcc-7 && export CXX=g++-7 && export PREFIX=workspace/destdir && export BOOST_VER=boost_1_69_0
-  - curl -L --output $BOOST_VER.tar.bz2 https://dl.bintray.com/boostorg/release/1.69.0/source/$BOOST_VER.tar.bz2
-  - tar xjf $BOOST_VER.tar.bz2
-  - cd $BOOST_VER
-  - mkdir -p $PREFIX
-  - ./bootstrap.sh --prefix=$PREFIX --with-toolset=cc
-  - ../user-config.sh
-  - ./b2 -j2 --layout=system install
+  - git clone "https://github.com/spack/spack"
+  - cd spack
+  - git checkout v0.12.1
+  - . share/spack/setup-env.sh
+  - spack install --verbose --jobs 2 boost %gcc
